@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app version="3.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:web="http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+	<!-- START : Should not be necessary with SpringBootServletInitializer -->
+	<!-- Spring MVC Servlet -->
+	<servlet>
+		<servlet-name>transmissaoProcessamento-spring-boot</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		</init-param>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>com.ccp.jn.web.spring.application.JnSyncSpringApplicationStarter</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- Let Spring MVC handle every URL -->
+	<servlet-mapping>
+		<servlet-name>transmissaoProcessamento-spring-boot</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<description>
+		</description>
+		<display-name>ValidEmailFilter</display-name>
+		<filter-name>ValidEmailFilter</filter-name>
+		<filter-class>com.ccp.jn.web.spring.filters.JnValidEmailFilter</filter-class>
+
+	</filter>
+	<filter-mapping>
+		<filter-name>ValidEmailFilter</filter-name>
+		<url-pattern>/login/*</url-pattern>
+	</filter-mapping>
+</web-app>

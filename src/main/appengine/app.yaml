@@ -1,0 +1,7 @@
+runtime: java17
+instance_class: F4
+env: standard
+service: jn-dependency-chooser-sync-endpoints-spring
+handlers:
+  - url: .*
+    script: auto  
