@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
@@ -23,9 +22,10 @@ import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.jn.controller.ControllerJnLogin;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.ccp.web.servlet.filters.CcpPutSessionValuesAndExecuteTaskFilter;
-import com.ccp.web.servlet.filters.CcpValidEmailFilter;
-import com.ccp.web.spring.exceptions.handler.CcpSyncExceptionHandler;
+import com.ccp.rest.api.spring.exceptions.handler.CcpSyncExceptionHandler;
+import com.ccp.rest.api.spring.servlet.filters.CcpPutSessionValuesAndExecuteTaskFilter;
+import com.ccp.rest.api.spring.servlet.filters.CcpValidEmailFilter;
+import com.ccp.rest.api.utils.CcpRestApiUtils;
 import com.jn.business.commons.JnBusinessNotifyError;
 import com.jn.business.login.JnBusinessValidateSession;
 import com.jn.mensageria.JnMensageriaSender;
@@ -40,18 +40,22 @@ import com.jn.mensageria.JnMensageriaSender;
 public class ApplicationStarterJnSyncSpring {
 	
 	public static void main(String[] args) {
+		CcpDependencyInjection.loadAllDependencies(
+				new CcpGsonJsonHandler()
+				);
 		
-		boolean localEnviroment = new CcpStringDecorator("c:\\rh").file().exists();
+		
+		boolean localEnvironment = CcpRestApiUtils.isLocalEnvironment();	
+
 		CcpDependencyInjection.loadAllDependencies
 		(
-				localEnviroment ? CcpLocalInstances.mensageriaSender.getLocalImplementation() : new CcpGcpPubSubMensageriaSender(),
-				localEnviroment ? CcpLocalInstances.bucket.getLocalImplementation() : new CcpGcpFileBucket(),
-				localEnviroment ? CcpLocalCacheInstances.map.getLocalImplementation() : new CcpGcpMemCache()
+				localEnvironment ? CcpLocalInstances.mensageriaSender.getLocalImplementation() : new CcpGcpPubSubMensageriaSender(),
+				localEnvironment ? CcpLocalInstances.bucket.getLocalImplementation() : new CcpGcpFileBucket(),
+				localEnvironment ? CcpLocalCacheInstances.map.getLocalImplementation() : new CcpGcpMemCache()
 				,new CcpMindrotPasswordHandler()
 				,new CcpElasticSearchDbRequest()
 				,new CcpGcpMainAuthentication()
 				,new CcpElasticSearchCrud()
-				,new CcpGsonJsonHandler()
 				,new CcpApacheMimeHttp() 
 		);
 
