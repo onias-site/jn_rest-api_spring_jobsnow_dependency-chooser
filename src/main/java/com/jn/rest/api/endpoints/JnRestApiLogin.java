@@ -1,4 +1,4 @@
-package com.ccp.jn.controller;
+package com.jn.rest.api.endpoints;
 
 import java.util.Map;
 
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.validation.CcpJsonFieldsValidations;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.json.fields.validations.JnJsonFieldsValidationLoginAnswers;
-import com.jn.json.fields.validations.JnJsonFieldsValidationPassword;
+import com.jn.json.validations.JnJsonFieldsValidationLoginAnswers;
+import com.jn.json.validations.JnJsonFieldsValidationPassword;
 import com.jn.services.JnServiceLogin;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping(value = "/login/{email}")
 @Tag(name = "Login", description = "Controles de login para cadastro de token, senha, senha fraca, pre registro, alem de controles de bloqueios diversos tais como: token, senha, senha de desbloqueio de token")
-public class ControllerJnLogin{
+public class JnRestApiLogin{
 
 	@Operation(summary = "Executar Login", description = "Quando ocorre? Logo após o usuário digitar sua senha. Para que serve? Serve para o usuário executar login no sistema, gerando um token que será a prova "
 			+ " (nas próximas requisições) que o requisitante (frontend), merece ter leitura ou escrita de certos recursos deste bando de dados. "

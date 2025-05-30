@@ -1,4 +1,4 @@
-package com.ccp.jn.controller;
+package com.jn.rest.api.endpoints;
 
 import java.util.Map;
 
@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping(value = "/async/task")
 @Tag(name = "AsyncTask", description = "Tarefas assíncronas, aquelas que são executadas em segundo plano")
-public class ControllerJnAsyncTask {
+public class JnRestApiAsyncTask {
 
 	@Operation(summary = "Obter tarefa status da tarefa assíncrona pelo id")
 	@GetMapping("/{asyncTaskId}")

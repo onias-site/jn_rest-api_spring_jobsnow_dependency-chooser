@@ -1,4 +1,4 @@
-package com.ccp.jn;
+package com.jn.rest.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,7 +19,6 @@ import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.main.authentication.gcp.oauth.CcpGcpMainAuthentication;
 import com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender;
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
-import com.ccp.jn.controller.ControllerJnLogin;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.spring.exceptions.handler.CcpSyncExceptionHandler;
@@ -28,16 +27,17 @@ import com.ccp.rest.api.spring.servlet.filters.CcpValidEmailFilter;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
 import com.jn.business.commons.JnBusinessNotifyError;
 import com.jn.business.login.JnBusinessValidateSession;
-import com.jn.mensageria.JnMensageriaSender;
+import com.jn.mensageria.JnFunctionMensageriaSender;
+import com.jn.rest.api.endpoints.JnRestApiLogin;
 
 @EnableWebMvc
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 @ComponentScan(basePackageClasses = {
-		ControllerJnLogin.class, 
+		JnRestApiLogin.class, 
 		CcpSyncExceptionHandler.class,
 })
 @SpringBootApplication
-public class ApplicationStarterJnSyncSpring {
+public class JnRestApiSpringStarter {
 	
 	public static void main(String[] args) {
 		CcpDependencyInjection.loadAllDependencies(
@@ -59,9 +59,9 @@ public class ApplicationStarterJnSyncSpring {
 				,new CcpApacheMimeHttp() 
 		);
 
-		CcpSyncExceptionHandler.genericExceptionHandler = new JnMensageriaSender(JnBusinessNotifyError.INSTANCE);
+		CcpSyncExceptionHandler.genericExceptionHandler = new JnFunctionMensageriaSender(JnBusinessNotifyError.INSTANCE);
 
-		SpringApplication.run(ApplicationStarterJnSyncSpring.class, args);
+		SpringApplication.run(JnRestApiSpringStarter.class, args);
 	}
 
 	@Bean
