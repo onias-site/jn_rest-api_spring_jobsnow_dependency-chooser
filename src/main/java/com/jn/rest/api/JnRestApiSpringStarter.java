@@ -21,7 +21,7 @@ import com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensager
 import com.ccp.implementations.password.mindrot.CcpMindrotPasswordHandler;
 import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
-import com.ccp.rest.api.spring.exceptions.handler.CcpSyncExceptionHandler;
+import com.ccp.rest.api.spring.exceptions.handler.CcpRestApiExceptionHandlerSpring;
 import com.ccp.rest.api.spring.servlet.filters.CcpPutSessionValuesAndExecuteTaskFilter;
 import com.ccp.rest.api.spring.servlet.filters.CcpValidEmailFilter;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
@@ -34,7 +34,7 @@ import com.jn.rest.api.endpoints.JnRestApiLogin;
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 @ComponentScan(basePackageClasses = {
 		JnRestApiLogin.class, 
-		CcpSyncExceptionHandler.class,
+		CcpRestApiExceptionHandlerSpring.class,
 })
 @SpringBootApplication
 public class JnRestApiSpringStarter {
@@ -59,7 +59,7 @@ public class JnRestApiSpringStarter {
 				,new CcpApacheMimeHttp() 
 		);
 
-		CcpSyncExceptionHandler.genericExceptionHandler = new JnFunctionMensageriaSender(JnBusinessNotifyError.INSTANCE);
+		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = new JnFunctionMensageriaSender(JnBusinessNotifyError.INSTANCE);
 
 		SpringApplication.run(JnRestApiSpringStarter.class, args);
 	}
