@@ -11,10 +11,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
+import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
+import com.ccp.implementations.email.sendgrid.CcpSendGridEmailSender;
 import com.ccp.implementations.file.bucket.gcp.CcpGcpFileBucket;
 import com.ccp.implementations.http.apache.mime.CcpApacheMimeHttp;
+import com.ccp.implementations.instant.messenger.telegram.CcpTelegramInstantMessenger;
 import com.ccp.implementations.json.gson.CcpGsonJsonHandler;
 import com.ccp.implementations.main.authentication.gcp.oauth.CcpGcpMainAuthentication;
 import com.ccp.implementations.mensageria.sender.gcp.pubsub.CcpGcpPubSubMensageriaSender;
@@ -49,6 +52,9 @@ public class JnRestApiSpringStarter {
 
 		CcpDependencyInjection.loadAllDependencies
 		(
+				new CcpElasticSerchDbBulk(), 
+				new CcpTelegramInstantMessenger(),
+				localEnvironment ? CcpLocalInstances.email.getLocalImplementation() : new CcpSendGridEmailSender(),
 				localEnvironment ? CcpLocalInstances.mensageriaSender.getLocalImplementation() : new CcpGcpPubSubMensageriaSender(),
 				localEnvironment ? CcpLocalInstances.bucket.getLocalImplementation() : new CcpGcpFileBucket(),
 				localEnvironment ? CcpLocalCacheInstances.map.getLocalImplementation() : new CcpGcpMemCache()
