@@ -54,10 +54,10 @@ public class JnRestApiSpringStarter {
 		(
 				new CcpElasticSerchDbBulk(), 
 				new CcpTelegramInstantMessenger(),
-				localEnvironment ? CcpLocalInstances.email.getLocalImplementation() : new CcpSendGridEmailSender(),
-				localEnvironment ? CcpLocalInstances.mensageriaSender.getLocalImplementation() : new CcpGcpPubSubMensageriaSender(),
-				localEnvironment ? CcpLocalInstances.bucket.getLocalImplementation() : new CcpGcpFileBucket(),
-				localEnvironment ? CcpLocalCacheInstances.map.getLocalImplementation() : new CcpGcpMemCache()
+				localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
+				localEnvironment ? CcpLocalInstances.mensageriaSender : new CcpGcpPubSubMensageriaSender(),
+				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
+				localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache()
 				,new CcpMindrotPasswordHandler()
 				,new CcpElasticSearchDbRequest()
 				,new CcpGcpMainAuthentication()
