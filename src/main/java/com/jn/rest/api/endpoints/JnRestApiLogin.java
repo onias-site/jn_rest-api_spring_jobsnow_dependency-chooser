@@ -128,7 +128,7 @@ public class JnRestApiLogin{
 	@DeleteMapping("/{sessionToken}")
 	public void executeLogout(@RequestBody String body, @PathVariable("sessionToken") String sessionToken) {
 		CcpJsonRepresentation incompleteSessionValues = new CcpJsonRepresentation(body);
-		CcpJsonRepresentation completeSessionValues = incompleteSessionValues.put(JnEntityLoginSessionValidation.Fields.token.name(), sessionToken);
+		CcpJsonRepresentation completeSessionValues = incompleteSessionValues.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
 		JnServiceLogin.INSTANCE.executeLogout(completeSessionValues);
 	}
 
