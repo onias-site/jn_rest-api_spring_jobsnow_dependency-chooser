@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.validation.CcpJsonFieldsValidations;
 import com.jn.entities.JnEntityLoginSessionValidation;
-import com.jn.json.validations.JnJsonFieldsValidationLoginAnswers;
-import com.jn.json.validations.JnJsonFieldsValidationPassword;
 import com.jn.services.JnServiceLogin;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,7 +60,6 @@ public class JnRestApiLogin{
 	@PostMapping
 	public Map<String, Object> executeLogin(@RequestBody Map<String, Object> body) {
 		
-		CcpJsonFieldsValidations.validate(JnJsonFieldsValidationPassword.class, body, "executeLogin");
 
 		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
 		
@@ -150,7 +146,6 @@ public class JnRestApiLogin{
 			})
 	@PostMapping("/pre-registration")
 	public void saveAnswers(@RequestBody Map<String, Object> body) {
-		CcpJsonFieldsValidations.validate(JnJsonFieldsValidationLoginAnswers.class, body, "savePreRegistration");
 		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
 		JnServiceLogin.INSTANCE.saveAnswers(json);
 	}
