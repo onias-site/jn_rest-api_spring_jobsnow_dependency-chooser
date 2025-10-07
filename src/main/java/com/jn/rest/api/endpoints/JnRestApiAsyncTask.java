@@ -20,13 +20,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/async/task")
+@RequestMapping("/async/task")
 @Tag(name = "AsyncTask", description = "Tarefas assíncronas, aquelas que são executadas em segundo plano")
 public class JnRestApiAsyncTask {
 
 	@Operation(summary = "Obter tarefa status da tarefa assíncrona pelo id")
 	@GetMapping("/{asyncTaskId}")
-	@ApiResponses(value = { @ApiResponse(content = {
+	@ApiResponses({ @ApiResponse(content = {
 			@Content(mediaType = "application/json", schema = @Schema(example = "{}")) }, responseCode = "200", description = "Status: 'Tarefa assíncrona encontrada'"),
 			@ApiResponse(content = {
 					@Content(mediaType = "application/json", schema = @Schema(example = "{}")) }, responseCode = "404", description = "Status: 'Tarefa assíncrona não encontrada'"

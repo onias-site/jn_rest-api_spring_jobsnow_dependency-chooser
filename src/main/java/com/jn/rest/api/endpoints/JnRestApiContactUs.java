@@ -17,7 +17,7 @@ package com.jn.rest.api.endpoints;
 //
 //@CrossOrigin
 //@RestController
-//@RequestMapping(value = "/contact-us")
+//@RequestMapping("/contact-us")
 //public class JnContactUsController {
 //
 //	private final JnSyncBusinessContactUs injected = new JnSyncBusinessContactUs();
@@ -29,7 +29,7 @@ package com.jn.rest.api.endpoints;
 //		return execute.content;
 //	}
 //
-//	@RequestMapping(value = "/from/{sender}/subjectType/{subjectType}", method = RequestMethod.HEAD)
+//	@RequestMapping("/from/{sender}/subjectType/{subjectType}", method = RequestMethod.HEAD)
 //	public void verifyContactUs(@PathVariable("sender") String sender, @PathVariable("subjectType") String subjectType) {
 //		
 //		this.injected.verifyContactUs(sender, subjectType);

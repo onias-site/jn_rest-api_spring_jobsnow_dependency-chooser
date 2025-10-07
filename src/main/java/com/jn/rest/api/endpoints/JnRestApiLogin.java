@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/login/{email}")
+@RequestMapping("/login/{email}")
 @Tag(name = "Login", description = "Controles de login para cadastro de token, senha, senha fraca, pre registro, alem de controles de bloqueios diversos tais como: token, senha, senha de desbloqueio de token")
 public class JnRestApiLogin{
 
@@ -34,7 +34,7 @@ public class JnRestApiLogin{
 			+ "O parametro words hash é informado pelo front end (ou nao) por query parameter, se acaso ele for informado e estiver igual ao que o "
 			+ "back end tem, o wordsHash não será devolvido na response desse método. Caso este parâmetro não for informado, ou se não for o mesmo que está no back end, então a lista do wordsHash é retornada juntamente com o novo wordsHash e o front deverá salvar no application storage (memória de longa duração do navegador)"
 			+ "<br/><br/>Passo anterior: 'Verificação de e-mail'")
-	@ApiResponses(value = { @ApiResponse(content = {
+	@ApiResponses({ @ApiResponse(content = {
 			@Content(schema = @Schema(example = "{\"sessionToken\": \"{valorDoToken}\"}")) }, 
 	responseCode = "200", description = "Status: 'Usuário logado com sucesso' <br/><br/> Quando ocorre? Quando o usuário digita senha e e-mail corretos e não está com senha ou token bloqueado ou pendência de desbloqueio de token<br/><br/>Qual comportamento esperado do front end? Que ele remova o modal de login e guarde o 'sessionToken' contido no json retornado por este endpoint"),
 			@ApiResponse(content = {
@@ -71,7 +71,7 @@ public class JnRestApiLogin{
 
 	@Operation(summary = "Criar email para login", description = "Quando ocorre? Logo após ser constatado que é primeiro acesso deste usuário e ele confirmar o e-mail. Para que serve? Serve para o usuário requisitar envio de token para o seu e-mail e ele poder usar esse token para cadastrar senha. "
 			+ " (nas próximas requisições) que o requisitante (frontend), merece ter leitura ou escrita de certos recursos deste bando de dados. Passo anterior: 'Verificação de e-mail'.")
-	@ApiResponses(value = { @ApiResponse(content = {
+	@ApiResponses({ @ApiResponse(content = {
 			@Content(schema = @Schema(example = "")) }, responseCode = "200", description = "Status: 'Senha já cadastrada, usuário sem pendências"
 					+ " de cadastro' <br/><br/> Quando ocorre? Quando o usuário previamente cadastrou todos os dados de pre requisitos "
 					+ "(token, senha e pré registro)<br/><br/>"
@@ -98,7 +98,7 @@ public class JnRestApiLogin{
 	}
 
 	@Operation(summary = "Verificação de existência deste usuário", description = "Quando ocorre? Logo após o usuário se interessar em ter acesso a informações deste sistema que ele só pode ter se estiver devidamente identificado (logado) nele. Para que serve? Serve para verificar se o usuário existe no sistema, caso ele existir, verificar se há pendências cadastrais (senha, pré registro) para ele resolver e se não existir, fazê-lo preencher todos os dados que o sistema precisa.")
-	@ApiResponses(value = {
+	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Status: 'Senha já cadastrada, usuário sem pendências de cadastro' <br/><br/> Quando ocorre? Quando o usuário previamente cadastrou todos os dados de pre requisitos (token, senha e pré registro)<br/><br/>Qual comportamento esperado do front end? Redirecionamento para a tela que pede senha para executar login."),
 			@ApiResponse(responseCode = "201", description = "Status: 'O cadastro de Pre registro está pendente' <br/><br/> Quando ocorre? Quando o usuário deixou de cadastrar dados do pré registro<br/><br/>Qual comportamento esperado do front end? Redirecionamento para a tela de cadastro do pré registro."),
 			@ApiResponse(responseCode = "202", description = "Status: 'O cadastro de  senha está pendente' <br/><br/> Quando ocorre? Quando o usuário deixou cadastrar senha<br/><br/>Qual comportamento esperado do front end? Redirecionamento para a tela de cadastro da senha."),
@@ -115,7 +115,7 @@ public class JnRestApiLogin{
 	}
 
 	@Operation(summary = "Executar logout no sistema", description = "Quando ocorre? Quando por qualquer razão, o usuário quis não mais ter acesso a informações onde ele precisava estar devidamente identificado (logado) neste sistema. Para que serve? Serve para o usuário previamente se desassociar das próximas ações que serão feitas por este front end.")
-	@ApiResponses(value = { @ApiResponse(content = {
+	@ApiResponses({ @ApiResponse(content = {
 			@Content(schema = @Schema(example = "")) }, responseCode = "200", description = "Status: 'Usuário executou logout com sucesso' <br/><br/> Quando ocorre? Quando o usuário de fato estavacom sessão ativa (logado) neste sistema<br/><br/>Qual comportamento esperado do front end? Encerramento do modal de login."),
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "400", description = "Status: 'Email inválido' <br/><br/> Quando ocorre? Quando a url path recebe um conjunto de caracteres que não representa um e-mail válido.<br/><br/>Qual comportamento esperado do front end? Apresentar erro genérico de sistema para o usuário."),
@@ -129,7 +129,7 @@ public class JnRestApiLogin{
 	}
 
 	@Operation(summary = "Salvar pré registro", description = "Quando ocorre? Logo após o usuário tentar executar login e o sistema constatar ausência de dados de pré registro. Para que serve? Serve para o usuário cadadtrar dados de pré registro.")
-	@ApiResponses(value = { @ApiResponse(content = {
+	@ApiResponses({ @ApiResponse(content = {
 			@Content(schema = @Schema(example = "")) }, responseCode = "200", description = "Status: 'Usuário sem pendências de cadastro' <br/><br/> Quando ocorre? Quando o usuário previamente cadastrou todos os dados de pre requisitos (token, senha e pré registro)<br/><br/>Qual comportamento esperado do front end? Redirecionamento para a tela que pede senha para executar login."),
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "{'sessionToken': 'tokengeradoaleatoriamente'}")) }, responseCode = "202", description = "Status: 'O cadastro de  senha está pendente' <br/><br/> Quando ocorre? Quando o usuário deixou cadastrar senha<br/><br/>Qual comportamento esperado do front end? Redirecionamento para a tela de cadastro da senha."),
@@ -151,7 +151,7 @@ public class JnRestApiLogin{
 	}
 
 	@Operation(summary = "Salvamento de senha", description = "Quando ocorre? Logo após o sistema constatar que o usuário está com senha bloqueada ou faltando, login já em uso ou se o usuário quer alterar senha. Para que serve? Serve para o usuário cadastrar senha de acesso no sistema. O parametro words hash é informado pelo front end (ou nao) por query parameter, se acaso ele for informado e estiver igual ao que o back end tem, o wordsHash não será devolvido na response desse método. Caso este parâmetro não for informado, ou se não for o mesmo que está no back end, então a lista do wordsHash é retornada juntamente com o novo wordsHash e o front deverá salvar no application storage (memória de longa duração do navegador)")
-	@ApiResponses(value = { @ApiResponse(content = {
+	@ApiResponses({ @ApiResponse(content = {
 			@Content(schema = @Schema(example = "{\r\n"
 					+ "    \"sessionToken\": \"{valorDoToken}\",\r\n"
 					+ "    \"wordsHash\": \"{wordsHash}\",\r\n"
@@ -193,7 +193,7 @@ public class JnRestApiLogin{
 	}
 	@Operation(summary = "Criar email para login", description = "Quando ocorre? Logo após ser constatado que é primeiro acesso deste usuário e ele confirmar o e-mail. Para que serve? Serve para o usuário requisitar envio de token para o seu e-mail e ele poder usar esse token para cadastrar senha. "
 			+ " (nas próximas requisições) que o requisitante (frontend), merece ter leitura ou escrita de certos recursos deste bando de dados. Passo anterior: 'Verificação de e-mail'.")
-	@ApiResponses(value = { @ApiResponse(content = {
+	@ApiResponses({ @ApiResponse(content = {
 			@Content(schema = @Schema(example = "")) }, responseCode = "200", description = "Status: 'Senha já cadastrada, usuário sem pendências"
 					+ " de cadastro' <br/><br/> Quando ocorre? Quando o usuário previamente cadastrou todos os dados de pre requisitos "
 					+ "(token, senha e pré registro)<br/><br/>"
