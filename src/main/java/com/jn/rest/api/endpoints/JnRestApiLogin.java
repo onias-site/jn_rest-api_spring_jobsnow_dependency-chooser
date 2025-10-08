@@ -60,13 +60,8 @@ public class JnRestApiLogin{
 	@PostMapping
 	public Map<String, Object> executeLogin(@RequestBody Map<String, Object> body) {
 		
-
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
-		
-		CcpJsonRepresentation putAll = json.putAll(body);
-		
-		CcpJsonRepresentation execute = JnServiceLogin.INSTANCE.executeLogin(putAll);
-		return execute.content;
+		Map<String, Object> execute = JnServiceLogin.ExecuteLogin.execute(body);
+		return execute;
 	}
 
 	@Operation(summary = "Criar email para login", description = "Quando ocorre? Logo após ser constatado que é primeiro acesso deste usuário e ele confirmar o e-mail. Para que serve? Serve para o usuário requisitar envio de token para o seu e-mail e ele poder usar esse token para cadastrar senha. "
@@ -91,10 +86,8 @@ public class JnRestApiLogin{
 	@PostMapping("/token")
 	public Map<String, Object> createLoginEmail(@RequestBody Map<String, Object> body) {
 		
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
-
-		CcpJsonRepresentation createLoginToken = JnServiceLogin.INSTANCE.createLoginEmail(json);
-		return createLoginToken.content;
+		Map<String, Object> execute = JnServiceLogin.CreateLoginEmail.execute(body);
+		return execute;
 	}
 
 	@Operation(summary = "Verificação de existência deste usuário", description = "Quando ocorre? Logo após o usuário se interessar em ter acesso a informações deste sistema que ele só pode ter se estiver devidamente identificado (logado) nele. Para que serve? Serve para verificar se o usuário existe no sistema, caso ele existir, verificar se há pendências cadastrais (senha, pré registro) para ele resolver e se não existir, fazê-lo preencher todos os dados que o sistema precisa.")
@@ -111,7 +104,7 @@ public class JnRestApiLogin{
 	@RequestMapping(value = "/token", method = RequestMethod.HEAD)
 	public void existsLoginEmail(@RequestBody String body) {
 		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
-		JnServiceLogin.INSTANCE.existsLoginEmail(json);
+		JnServiceLogin.ExistsLoginEmail.execute(json.content);
 	}
 
 	@Operation(summary = "Executar logout no sistema", description = "Quando ocorre? Quando por qualquer razão, o usuário quis não mais ter acesso a informações onde ele precisava estar devidamente identificado (logado) neste sistema. Para que serve? Serve para o usuário previamente se desassociar das próximas ações que serão feitas por este front end.")
@@ -125,7 +118,7 @@ public class JnRestApiLogin{
 	public void executeLogout(@RequestBody String body, @PathVariable("sessionToken") String sessionToken) {
 		CcpJsonRepresentation incompleteSessionValues = new CcpJsonRepresentation(body);
 		CcpJsonRepresentation completeSessionValues = incompleteSessionValues.put(JnEntityLoginSessionValidation.Fields.token, sessionToken);
-		JnServiceLogin.INSTANCE.executeLogout(completeSessionValues);
+		JnServiceLogin.ExecuteLogout.execute(completeSessionValues.content);
 	}
 
 	@Operation(summary = "Salvar pré registro", description = "Quando ocorre? Logo após o usuário tentar executar login e o sistema constatar ausência de dados de pré registro. Para que serve? Serve para o usuário cadadtrar dados de pré registro.")
@@ -146,8 +139,7 @@ public class JnRestApiLogin{
 			})
 	@PostMapping("/pre-registration")
 	public void saveAnswers(@RequestBody Map<String, Object> body) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
-		JnServiceLogin.INSTANCE.saveAnswers(json);
+		JnServiceLogin.SaveAnswers.execute(body);
 	}
 
 	@Operation(summary = "Salvamento de senha", description = "Quando ocorre? Logo após o sistema constatar que o usuário está com senha bloqueada ou faltando, login já em uso ou se o usuário quer alterar senha. Para que serve? Serve para o usuário cadastrar senha de acesso no sistema. O parametro words hash é informado pelo front end (ou nao) por query parameter, se acaso ele for informado e estiver igual ao que o back end tem, o wordsHash não será devolvido na response desse método. Caso este parâmetro não for informado, ou se não for o mesmo que está no back end, então a lista do wordsHash é retornada juntamente com o novo wordsHash e o front deverá salvar no application storage (memória de longa duração do navegador)")
@@ -187,9 +179,8 @@ public class JnRestApiLogin{
 	@PostMapping("/password")
 	public Map<String, Object> savePassword(@RequestBody Map<String, Object> body) {
 		
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
-		CcpJsonRepresentation execute = JnServiceLogin.INSTANCE.savePassword(json);
-		return execute.content;
+		Map<String, Object> execute = JnServiceLogin.SavePassword.execute(body);
+		return execute;
 	}
 	@Operation(summary = "Criar email para login", description = "Quando ocorre? Logo após ser constatado que é primeiro acesso deste usuário e ele confirmar o e-mail. Para que serve? Serve para o usuário requisitar envio de token para o seu e-mail e ele poder usar esse token para cadastrar senha. "
 			+ " (nas próximas requisições) que o requisitante (frontend), merece ter leitura ou escrita de certos recursos deste bando de dados. Passo anterior: 'Verificação de e-mail'.")
@@ -218,11 +209,8 @@ public class JnRestApiLogin{
 			@RequestBody Map<String, Object> body
 			) {
 		
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
-		
-		CcpJsonRepresentation createLoginToken = JnServiceLogin.INSTANCE.createLoginToken(json);
-		
-		return createLoginToken.content;
+		Map<String, Object> execute = JnServiceLogin.CreateLoginToken.execute(body);
+		return execute;
 	}
 
 	@GetMapping("/erro")
