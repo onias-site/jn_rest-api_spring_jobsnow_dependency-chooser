@@ -32,7 +32,7 @@ public class JnRestApiAsyncTask {
 					@Content(mediaType = "application/json", schema = @Schema(example = "{}")) }, responseCode = "404", description = "Status: 'Tarefa assíncrona não encontrada'"
 							), })
 	public Map<String, Object> getAsyncTaskStatusById(@PathVariable("asyncTaskId") String asyncTaskId) {
-		CcpJsonRepresentation execute =  JnEntityAsyncTask.ENTITY.getOneById(asyncTaskId);
+		CcpJsonRepresentation execute = JnEntityAsyncTask.ENTITY.getOneById(asyncTaskId);
 		return execute.content;
 	}
 

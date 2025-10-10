@@ -1,5 +1,5 @@
 package com.jn.rest.api.swagger;
 
-public interface JnSwaggerLogin {
+public interface JnOpenApiLogin {
 
 }
