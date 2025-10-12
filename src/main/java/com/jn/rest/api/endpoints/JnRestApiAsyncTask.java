@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.jn.entities.JnEntityAsyncTask;
+import com.jn.services.JnServiceAsyncTask;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,8 +33,9 @@ public class JnRestApiAsyncTask {
 					@Content(mediaType = "application/json", schema = @Schema(example = "{}")) }, responseCode = "404", description = "Status: 'Tarefa assíncrona não encontrada'"
 							), })
 	public Map<String, Object> getAsyncTaskStatusById(@PathVariable("asyncTaskId") String asyncTaskId) {
-		CcpJsonRepresentation execute = JnEntityAsyncTask.ENTITY.getOneById(asyncTaskId);
-		return execute.content;
+		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON.put(JnServiceAsyncTask.JsonFieldNames.asyncTaskId, asyncTaskId);
+		Map<String, Object> execute = JnServiceAsyncTask.GetAsyncTaskStatusById.execute(put.content);
+		return execute;
 	}
 
 }
