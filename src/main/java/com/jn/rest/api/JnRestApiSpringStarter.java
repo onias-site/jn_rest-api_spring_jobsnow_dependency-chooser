@@ -54,7 +54,8 @@ public class JnRestApiSpringStarter {
 		(
 				new CcpElasticSerchDbBulk(), 
 				new CcpTelegramInstantMessenger(),
-				localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
+//				localEnvironment ? CcpLocalInstances.email : 
+					new CcpSendGridEmailSender(),
 				localEnvironment ? CcpLocalInstances.mensageriaSender : new CcpGcpPubSubMensageriaSender(),
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
 				localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache()
