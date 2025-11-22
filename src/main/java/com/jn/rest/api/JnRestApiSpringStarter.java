@@ -52,18 +52,17 @@ public class JnRestApiSpringStarter {
 
 		CcpDependencyInjection.loadAllDependencies
 		(
-				new CcpElasticSerchDbBulk(), 
-				new CcpTelegramInstantMessenger(),
-//				localEnvironment ? CcpLocalInstances.email : 
-					new CcpSendGridEmailSender(),
 				localEnvironment ? CcpLocalInstances.mensageriaSender : new CcpGcpPubSubMensageriaSender(),
+				localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
-				localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache()
-				,new CcpMindrotPasswordHandler()
-				,new CcpElasticSearchDbRequest()
-				,new CcpGcpMainAuthentication()
-				,new CcpElasticSearchCrud()
-				,new CcpApacheMimeHttp() 
+				localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
+				new CcpTelegramInstantMessenger(),
+				new CcpMindrotPasswordHandler(),
+				new CcpElasticSearchDbRequest(),
+				new CcpGcpMainAuthentication(),
+				new CcpElasticSerchDbBulk(), 
+				new CcpElasticSearchCrud(),
+				new CcpApacheMimeHttp() 
 		);
 
 		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = new JnFunctionMensageriaSender(JnBusinessNotifyError.INSTANCE);
