@@ -12,7 +12,7 @@ package com.jn.rest.api.endpoints;
 //import org.springframework.web.bind.annotation.ResponseStatus;
 //import org.springframework.web.bind.annotation.RestController;
 //
-//import com.ccp.decorators.CcpMapDecorator;
+//import com.ccp.decorators.CcpJsonRepresentation;
 //import com.ccp.jn.sync.business.JnSyncBusinessContactUs;
 //
 //@CrossOrigin
@@ -25,7 +25,7 @@ package com.jn.rest.api.endpoints;
 //	@PostMapping("/")
 //	@ResponseStatus(code = HttpStatus.ACCEPTED)
 //	public Map<String, Object> execute(@RequestBody Map<String, Object> json) {
-//		CcpMapDecorator execute = this.injected.saveContactUs(json);
+//		CcpJsonRepresentation execute = this.injected.saveContactUs(json);
 //		return execute.content;
 //	}
 //
