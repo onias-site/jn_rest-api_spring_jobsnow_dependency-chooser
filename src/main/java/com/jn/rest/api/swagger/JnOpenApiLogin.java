@@ -33,7 +33,7 @@ public interface JnOpenApiLogin {
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "400", description = "Status: 'Email inválido' <br/><br/> Quando ocorre? Quando a url path recebe um conjunto de caracteres que não representa um e-mail válido.<br/><br/>Qual comportamento esperado do front end? Apresentar erro genérico de sistema para o usuário."),
 			@ApiResponse(content = {
-					@Content(schema = @Schema(example = "")) }, responseCode = "421", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
+					@Content(schema = @Schema(example = "")) }, responseCode = "427", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "403", description = "Status: 'Token bloqueado' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou várias vezes alterar sua senha fazendo uso de token incorreto.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de requisição de desbloqueio de token."),
 			@ApiResponse(content = {
@@ -58,7 +58,7 @@ public interface JnOpenApiLogin {
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "400", description = "Status: 'Email inválido' <br/><br/> Quando ocorre? Quando a url path recebe um conjunto de caracteres que não representa um e-mail válido.<br/><br/>Qual comportamento esperado do front end? Apresentar erro genérico de sistema para o usuário."),
 			@ApiResponse(content = {
-					@Content(schema = @Schema(example = "")) }, responseCode = "421", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
+					@Content(schema = @Schema(example = "")) }, responseCode = "427", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "403", description = "Status: 'Token bloqueado' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou várias vezes alterar sua senha fazendo uso de token incorreto.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de requisição de desbloqueio de token."),
 			@ApiResponse(content = {
@@ -84,7 +84,7 @@ public interface JnOpenApiLogin {
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "400", description = "Status: 'Email inválido' <br/><br/> Quando ocorre? Quando a url path recebe um conjunto de caracteres que não representa um e-mail válido.<br/><br/>Qual comportamento esperado do front end? Apresentar erro genérico de sistema para o usuário."),
 			@ApiResponse(content = {
-					@Content(schema = @Schema(example = "")) }, responseCode = "421", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
+					@Content(schema = @Schema(example = "")) }, responseCode = "427", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "403", description = "Status: 'Token bloqueado' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou várias vezes alterar sua senha fazendo uso de token incorreto.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de requisição de desbloqueio de token."),
 			@ApiResponse(content = {
@@ -114,7 +114,7 @@ public interface JnOpenApiLogin {
 			@ApiResponse(responseCode = "201", description = "Status: 'O cadastro de Pre registro está pendente' <br/><br/> Quando ocorre? Quando o usuário deixou de cadastrar dados do pré registro<br/><br/>Qual comportamento esperado do front end? Redirecionamento para a tela de cadastro do pré registro."),
 			@ApiResponse(responseCode = "202", description = "Status: 'O cadastro de  senha está pendente' <br/><br/> Quando ocorre? Quando o usuário deixou cadastrar senha<br/><br/>Qual comportamento esperado do front end? Redirecionamento para a tela de cadastro da senha."),
 			@ApiResponse(responseCode = "400", description = "Status: 'Email inválido' <br/><br/> Quando ocorre? Quando a url path recebe um conjunto de caracteres que não representa um e-mail válido.<br/><br/>Qual comportamento esperado do front end? Apresentar erro genérico de sistema para o usuário."),
-			@ApiResponse(responseCode = "421", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
+			@ApiResponse(responseCode = "427", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
 			@ApiResponse(responseCode = "403", description = "Status: 'Token bloqueado' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou várias vezes alterar sua senha fazendo uso de token incorreto.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de requisição de desbloqueio de token."),
 			@ApiResponse(responseCode = "404", description = "Status: 'Usuário novo no sistema' <br/><br/> Quando ocorre? Quando o e-mail do usuário é desconhecido por este banco de dados. <br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de confirmação de e-mail."),
 			@ApiResponse(responseCode = "409", description = "Status: 'Usuário já logado' <br/><br/> Quando ocorre? Quando já está registrada uma sessão corrente para o usuário que está tentando fazer login neste sistema. <br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
@@ -130,7 +130,7 @@ public interface JnOpenApiLogin {
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "400", description = "Status: 'Email inválido' <br/><br/> Quando ocorre? Quando a url path recebe um conjunto de caracteres que não representa um e-mail válido.<br/><br/>Qual comportamento esperado do front end? Apresentar erro genérico de sistema para o usuário."),
 			@ApiResponse(content = {
-					@Content(schema = @Schema(example = "")) }, responseCode = "421", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
+					@Content(schema = @Schema(example = "")) }, responseCode = "427", description = "Status: 'Senha pendente de desbloqueio' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou logar várias vezes com a mesma senha incorreta.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de alteração de senha."),
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "403", description = "Status: 'Token bloqueado' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou várias vezes alterar sua senha fazendo uso de token incorreto.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de requisição de desbloqueio de token."),
 			@ApiResponse(content = {
@@ -167,7 +167,7 @@ public interface JnOpenApiLogin {
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "400", description = "Status: 'Email inválido' <br/><br/> Quando ocorre? Quando a url path recebe um conjunto de caracteres que não representa um e-mail válido.<br/><br/>Qual comportamento esperado do front end? Apresentar erro genérico de sistema para o usuário."),
 			@ApiResponse(content = {
-					@Content(schema = @Schema(example = "")) }, responseCode = "421", description = "Status: 'Token digitado incorretamente' <br/><br/> Quando ocorre? Quando o usuário, digitou incorretamente o token, mas ainda não excedeu o máximo de tentativas de senhas incorretas. <br/><br/>Qual comportamento esperado do front end? Exibir mensagem de erro informando o número de tentativas incorretas de digitação de token."),
+					@Content(schema = @Schema(example = "")) }, responseCode = "427", description = "Status: 'Token digitado incorretamente' <br/><br/> Quando ocorre? Quando o usuário, digitou incorretamente o token, mas ainda não excedeu o máximo de tentativas de senhas incorretas. <br/><br/>Qual comportamento esperado do front end? Exibir mensagem de erro informando o número de tentativas incorretas de digitação de token."),
 			@ApiResponse(content = {
 					@Content(schema = @Schema(example = "")) }, responseCode = "403", description = "Status: 'Token bloqueado' <br/><br/> Quando ocorre? Quando o usuário, anteriormente tentou várias vezes alterar sua senha fazendo uso de token incorreto.<br/><br/>Qual comportamento esperado do front end? Redirecionar o usuário para a tela de requisição de desbloqueio de token."),
 			@ApiResponse(content = {
