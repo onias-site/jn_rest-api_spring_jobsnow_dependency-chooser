@@ -21,9 +21,14 @@ import com.jn.services.JnServiceLogin;
 @RequestMapping("/login/{email}")
 public class JnRestApiLogin{
 
+	@GetMapping("/{sessionToken}")
+	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {
+		CcpJsonRepresentation json = new CcpJsonRepresentation(body).getDynamicVersion().put("sessionToken", sessionToken);
+		JnServiceLogin.ValidateLogin.execute(json.content);
+	}
+	
 	@PostMapping
 	public Map<String, Object> executeLogin(@RequestBody Map<String, Object> body) {
-		
 		Map<String, Object> execute = JnServiceLogin.ExecuteLogin.execute(body);
 		return execute;
 	}
