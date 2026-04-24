@@ -35,8 +35,19 @@ public class JnRestApiLogin{
 
 	@PostMapping("/token")
 	public Map<String, Object> createLoginEmail(@RequestBody Map<String, Object> body) {
-		
 		Map<String, Object> execute = JnServiceLogin.CreateLoginEmail.execute(body);
+		return execute;
+	}
+
+	@PostMapping("/token/request/resending")
+	public Map<String, Object> unlockLoginToken(@RequestBody Map<String, Object> body) {
+		Map<String, Object> execute = JnServiceLogin.UnlockLoginToken.execute(body);
+		return execute;
+	}
+
+	@PostMapping("/token/request/unlocking")
+	public Map<String, Object> resendLoginToken(@RequestBody Map<String, Object> body) {
+		Map<String, Object> execute = JnServiceLogin.ResendLoginToken.execute(body);
 		return execute;
 	}
 
