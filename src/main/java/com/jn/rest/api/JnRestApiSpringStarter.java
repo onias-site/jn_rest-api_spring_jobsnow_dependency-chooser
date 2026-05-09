@@ -28,8 +28,8 @@ import com.ccp.rest.api.spring.exceptions.handler.CcpRestApiExceptionHandlerSpri
 import com.ccp.rest.api.spring.servlet.filters.CcpPutSessionValuesAndExecuteTaskFilter;
 import com.ccp.rest.api.spring.servlet.filters.CcpValidEmailFilter;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
-import com.jn.business.commons.JnBusinessNotifyError;
 import com.jn.business.login.JnBusinessSessionValidate;
+import com.jn.business.messages.JnBusinessNotifyError;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.rest.api.endpoints.JnRestApiLogin;
 
