@@ -23,7 +23,7 @@ public class JnRestApiLogin{
 
 	@GetMapping("/{sessionToken}")
 	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body).getDynamicVersion().put("sessionToken", sessionToken);
+		CcpJsonRepresentation json = new CcpJsonRepresentation(body).put(() -> "sessionToken", sessionToken);
 		JnServiceLogin.ValidateLogin.execute(json.content);
 	}
 	
