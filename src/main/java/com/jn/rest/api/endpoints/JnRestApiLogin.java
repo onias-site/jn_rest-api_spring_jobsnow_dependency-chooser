@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.services.JnServiceLogin;
@@ -23,7 +24,7 @@ public class JnRestApiLogin{
 
 	@GetMapping("/{sessionToken}")
 	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body).put(() -> "sessionToken", sessionToken);
+		CcpJsonRepresentation json = new CcpJsonRepresentation(body).put(new CcpFieldName("sessionToken"), sessionToken);
 		JnServiceLogin.ValidateLogin.execute(json.content);
 	}
 	
