@@ -15,6 +15,10 @@ package com.jn.rest.api.endpoints;
 //import com.ccp.decorators.CcpJsonRepresentation;
 //import com.ccp.jn.sync.business.JnSyncBusinessContactUs;
 //
+/**
+ * Controller destinado ao endpoint de "fale conosco" (path {@code /contact-us}).
+ * Atualmente toda a implementação está comentada, não existindo endpoints ativos nesta classe.
+ */
 //@CrossOrigin
 //@RestController
 //@RequestMapping("/contact-us")

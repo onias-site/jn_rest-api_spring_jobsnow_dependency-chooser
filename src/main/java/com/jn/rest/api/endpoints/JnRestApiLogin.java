@@ -15,12 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccp.decorators.CcpFieldName;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.jn.entities.JnEntityLoginSessionValidation;
+import com.jn.rest.open.api.JnOpenApiLogin;
 import com.jn.services.JnServiceLogin;
 
+/**
+ * REST controller for all login operations at path {@code /login/{email}}.
+ * Covers user existence check, token creation, login with password, logout,
+ * pre-registration, password registration, and token resend/unlock requests.
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/login/{email}")
-public class JnRestApiLogin{
+public class JnRestApiLogin implements JnOpenApiLogin {
 
 	@GetMapping("/{sessionToken}")
 	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {

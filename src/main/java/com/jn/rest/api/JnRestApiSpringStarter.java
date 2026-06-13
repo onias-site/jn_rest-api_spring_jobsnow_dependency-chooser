@@ -8,6 +8,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
@@ -33,10 +38,16 @@ import com.jn.business.messages.JnBusinessNotifyError;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.rest.api.endpoints.JnRestApiLogin;
 
+/**
+ * Ponto de entrada da API REST do módulo JN (jobsnow principal). Inicializa o DI com as implementações
+ * corretas (produção via GCP/Elasticsearch ou locais conforme {@code localEnvironment}), configura o handler
+ * de exceções globais e registra os filtros de servlet para validação de e-mail, injeção de sessão e
+ * validação de sessão.
+ */
 @EnableWebMvc
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 @ComponentScan(basePackageClasses = {
-		JnRestApiLogin.class, 
+		JnRestApiLogin.class,
 		CcpRestApiExceptionHandlerSpring.class,
 })
 @SpringBootApplication
@@ -68,6 +79,28 @@ public class JnRestApiSpringStarter {
 		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = new JnFunctionMensageriaSender(JnBusinessNotifyError.INSTANCE);
 
 		SpringApplication.run(JnRestApiSpringStarter.class, args);
+	}
+
+	@Bean
+	public OpenAPI jnOpenAPI() {
+		return new OpenAPI()
+				.info(new Info()
+						.title("JobsNow Authentication API")
+						.description("REST API for authentication: login, password management, token and session control.")
+						.version("1.0"));
+	}
+
+	@Bean
+	public WebMvcConfigurer swaggerResourceHandler() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addResourceHandlers(ResourceHandlerRegistry registry) {
+				registry.addResourceHandler("/webjars/**")
+						.addResourceLocations("classpath:/META-INF/resources/webjars/");
+				registry.addResourceHandler("/swagger-ui/**")
+						.addResourceLocations("classpath:/META-INF/resources/webjars/swagger-ui/");
+			}
+		};
 	}
 
 	@Bean

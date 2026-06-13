@@ -9,9 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.jn.rest.api.swagger.JnOpenApiAsyncTask;
+import com.jn.rest.open.api.JnOpenApiAsyncTask;
 import com.jn.services.JnServiceAsyncTask;
 
+/**
+ * Controller REST para consulta de tarefas assíncronas pelo id. Disponível no path
+ * {@code /async/task/{asyncTaskId}}, delega a consulta ao serviço {@code JnServiceAsyncTask.GetAsyncTaskStatusById}.
+ */
 @CrossOrigin
 @RestController
 public class JnRestApiAsyncTask implements JnOpenApiAsyncTask{
