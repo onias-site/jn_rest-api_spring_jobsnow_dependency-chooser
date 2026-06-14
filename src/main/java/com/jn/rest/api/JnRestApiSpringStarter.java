@@ -13,6 +13,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.PathParameter;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
@@ -79,6 +88,33 @@ public class JnRestApiSpringStarter {
 		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = new JnFunctionMensageriaSender(JnBusinessNotifyError.INSTANCE);
 
 		SpringApplication.run(JnRestApiSpringStarter.class, args);
+	}
+
+	@Bean
+	public GlobalOpenApiCustomizer missingPathParamsCustomizer() {
+		return openApi -> {
+			if (openApi.getPaths() == null) return;
+			Pattern p = Pattern.compile("\\{(\\w+)\\}");
+			openApi.getPaths().forEach((pathTemplate, pathItem) -> {
+				Set<String> templateVars = new HashSet<>();
+				Matcher m = p.matcher(pathTemplate);
+				while (m.find()) templateVars.add(m.group(1));
+				if (templateVars.isEmpty()) return;
+				pathItem.readOperations().forEach(op -> {
+					Set<String> declared = new HashSet<>();
+					if (op.getParameters() != null) {
+						op.getParameters().stream()
+							.filter(param -> "path".equals(param.getIn()))
+							.forEach(param -> declared.add(param.getName()));
+					}
+					templateVars.stream()
+						.filter(v -> !declared.contains(v))
+						.forEach(v -> op.addParametersItem(
+							new PathParameter().name(v).required(true).schema(new StringSchema())
+						));
+				});
+			});
+		};
 	}
 
 	@Bean
