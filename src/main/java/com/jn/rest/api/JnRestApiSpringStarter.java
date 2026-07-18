@@ -1,5 +1,11 @@
 package com.jn.rest.api;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,18 +16,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.media.StringSchema;
-import io.swagger.v3.oas.models.parameters.PathParameter;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 
 import com.ccp.dependency.injection.CcpDependencyInjection;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
@@ -42,10 +36,15 @@ import com.ccp.rest.api.spring.exceptions.handler.CcpRestApiExceptionHandlerSpri
 import com.ccp.rest.api.spring.servlet.filters.CcpPutSessionValuesAndExecuteTaskFilter;
 import com.ccp.rest.api.spring.servlet.filters.CcpValidEmailFilter;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
-import com.jn.business.login.JnBusinessSessionValidate;
 import com.jn.business.messages.JnBusinessNotifyError;
 import com.jn.mensageria.JnFunctionMensageriaSender;
 import com.jn.rest.api.endpoints.JnRestApiLogin;
+import com.jn.services.JnServiceLogin;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.PathParameter;
 
 /**
  * Ponto de entrada da API REST do módulo JN (jobsnow principal). Inicializa o DI com as implementações
@@ -159,7 +158,7 @@ public class JnRestApiSpringStarter {
 	@Bean
 	public FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> validateSessionFilter() {
 		FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> filtro = new FilterRegistrationBean<>();
-		CcpPutSessionValuesAndExecuteTaskFilter filter = new CcpPutSessionValuesAndExecuteTaskFilter(JnBusinessSessionValidate.INSTANCE);
+		CcpPutSessionValuesAndExecuteTaskFilter filter = new CcpPutSessionValuesAndExecuteTaskFilter(JnServiceLogin.ValidateLogin);
 		filtro.setFilter(filter);
 		filtro.addUrlPatterns("/contact-us/*");
 		return filtro;

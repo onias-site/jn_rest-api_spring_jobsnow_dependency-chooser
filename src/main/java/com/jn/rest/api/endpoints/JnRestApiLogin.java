@@ -30,7 +30,7 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 
 	@GetMapping("/{sessionToken}")
 	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body).put(new CcpFieldName("sessionToken"), sessionToken);
+		CcpJsonRepresentation json = new CcpJsonRepresentation(body).put(JnServiceLogin.JsonFieldNames.sessionToken, sessionToken);
 		JnServiceLogin.ValidateLogin.execute(json.content);
 	}
 	
