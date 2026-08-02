@@ -66,7 +66,7 @@ public class JnRestApiSpringStarter {
 				new CcpGsonJsonHandler()
 				);
 		
-		
+		 
 		boolean localEnvironment = CcpRestApiUtils.isLocalEnvironment();	
 
 		CcpDependencyInjection.loadAllDependencies
