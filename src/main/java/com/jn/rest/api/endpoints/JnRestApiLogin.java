@@ -29,7 +29,8 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 
 	@GetMapping("/{sessionToken}")
 	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {
-		CcpJsonRepresentation json = new CcpJsonRepresentation(body).put(JnServiceLogin.JsonFieldNames.sessionToken, sessionToken);
+		CcpJsonRepresentation ccpJsonRepresentation = new CcpJsonRepresentation(body);
+		CcpJsonRepresentation json = ccpJsonRepresentation.put(JnServiceLogin.JsonFieldNames.sessionToken, sessionToken);
 		JnServiceLogin.ValidateLogin.execute(json.content);
 	}
 	
@@ -93,6 +94,20 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 
 	@GetMapping("/erro")
 	public void apenasDeErro() {
-		throw new RuntimeException("erro de teste");
+		JnErrorLoginEndpointOnlyForTesting jnErrorLoginEndpointOnlyForTesting = new JnErrorLoginEndpointOnlyForTesting();
+		throw jnErrorLoginEndpointOnlyForTesting;
+	}
+
+	/**
+	 * Exceção lançada pelo endpoint {@code /erro}, que existe apenas para exercitar o tratador de exceções da API.
+	 */
+	@SuppressWarnings("serial")
+	public static class JnErrorLoginEndpointOnlyForTesting extends RuntimeException {
+		/**
+		 * Monta a mensagem que identifica o erro como proposital.
+		 */
+		private JnErrorLoginEndpointOnlyForTesting() {
+			super("erro de teste");
+		}
 	}
 }
