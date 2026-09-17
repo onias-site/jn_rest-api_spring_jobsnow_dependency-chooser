@@ -17,6 +17,8 @@ import com.jn.entities.JnEntityLoginSessionValidation;
 import com.jn.rest.open.api.JnOpenApiLogin;
 import com.jn.services.JnServiceLogin;
 
+import com.ccp.json.fields.validation.CcpJsonCommonsFields;
+
 /**
  * REST controller for all login operations at path {@code /login/{email}}.
  * Covers user existence check, token creation, login with password, logout,
@@ -30,7 +32,7 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 	@GetMapping("/{sessionToken}")
 	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {
 		CcpJsonRepresentation ccpJsonRepresentation = new CcpJsonRepresentation(body);
-		CcpJsonRepresentation json = ccpJsonRepresentation.put(JnServiceLogin.JsonFieldNames.sessionToken, sessionToken);
+		CcpJsonRepresentation json = ccpJsonRepresentation.put(CcpJsonCommonsFields.sessionToken, sessionToken);
 		JnServiceLogin.ValidateLogin.execute(json.content);
 	}
 	
