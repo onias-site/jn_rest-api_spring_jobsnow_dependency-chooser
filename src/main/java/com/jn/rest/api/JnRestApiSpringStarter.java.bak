@@ -95,7 +95,7 @@ public class JnRestApiSpringStarter {
 				ccpApacheMimeHttp 
 		);
 
-		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = CcpEntityOperationType.save.getOperationCallback(JnEntityJobsnowError.ENTITY);
+		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = JnEntityJobsnowError.ENTITY.getEntityMetaData().getOperationCallback(CcpEntityOperationType.save);
 
 		SpringApplication.run(JnRestApiSpringStarter.class, args);
 	}
