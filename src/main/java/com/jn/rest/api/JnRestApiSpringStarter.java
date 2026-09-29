@@ -86,7 +86,8 @@ public class JnRestApiSpringStarter {
 				localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
 				localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
-				ccpTelegramInstantMessenger,
+				// local: grava em c:\logs\telegram em vez de mandar mensagem real ao chat de suporte
+				localEnvironment ? CcpLocalInstances.instantMessenger : ccpTelegramInstantMessenger,
 				ccpMindrotPasswordHandler,
 				ccpElasticSearchDbRequest,
 				ccpGcpMainAuthentication,

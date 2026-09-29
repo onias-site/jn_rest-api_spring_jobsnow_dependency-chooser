@@ -95,7 +95,7 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 	}
 
 	@GetMapping("/erro")
-	public void apenasDeErro() {
+	public void onlyError() {
 		JnErrorLoginEndpointOnlyForTesting jnErrorLoginEndpointOnlyForTesting = new JnErrorLoginEndpointOnlyForTesting();
 		throw jnErrorLoginEndpointOnlyForTesting;
 	}
