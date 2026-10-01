@@ -24,6 +24,7 @@ import com.ccp.especifications.db.utils.entity.CcpEntityOperationType;
 import com.ccp.implementations.cache.gcp.memcache.CcpGcpMemCache;
 import com.ccp.implementations.db.bulk.elasticsearch.CcpElasticSerchDbBulk;
 import com.ccp.implementations.db.crud.elasticsearch.CcpElasticSearchCrud;
+import com.ccp.implementations.db.query.elasticsearch.CcpElasticSearchQueryExecutor;
 import com.ccp.implementations.db.utils.elasticsearch.CcpElasticSearchDbRequest;
 import com.ccp.implementations.email.sendgrid.CcpSendGridEmailSender;
 import com.ccp.implementations.file.bucket.gcp.CcpGcpFileBucket;
@@ -79,6 +80,8 @@ public class JnRestApiSpringStarter {
 		CcpElasticSerchDbBulk ccpElasticSerchDbBulk = new CcpElasticSerchDbBulk();
 		CcpElasticSearchCrud ccpElasticSearchCrud = new CcpElasticSearchCrud();
 		CcpApacheMimeHttp ccpApacheMimeHttp = new CcpApacheMimeHttp();
+		// the queries (e.g. the purge of a versionable record's history) need it
+		CcpElasticSearchQueryExecutor ccpElasticSearchQueryExecutor = new CcpElasticSearchQueryExecutor();
 
 		CcpDependencyInjection.loadAllDependencies
 		(
@@ -93,7 +96,8 @@ public class JnRestApiSpringStarter {
 				ccpGcpMainAuthentication,
 				ccpElasticSerchDbBulk, 
 				ccpElasticSearchCrud,
-				ccpApacheMimeHttp 
+				ccpElasticSearchQueryExecutor,
+				ccpApacheMimeHttp
 		);
 
 		CcpRestApiExceptionHandlerSpring.genericExceptionHandler = CcpEntityOperationType.save.getOperationCallback(JnEntityJobsnowError.ENTITY);
