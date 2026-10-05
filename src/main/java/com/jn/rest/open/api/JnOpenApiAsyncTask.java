@@ -20,6 +20,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "AsyncTask", description = "Asynchronous tasks — operations executed in the background whose result can be polled by ID.")
 public interface JnOpenApiAsyncTask {
 
+	/**
+	 * Get async task status by ID.
+	 * @param asyncTaskId the {@code asyncTaskId} path variable
+	 * @return the response body
+	 */
 	@Operation(
 		summary = "Get async task status by ID",
 		description = "When does it occur? When the frontend needs to check the result of a previously triggered background operation. "

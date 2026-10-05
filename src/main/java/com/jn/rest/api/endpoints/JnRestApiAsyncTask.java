@@ -13,13 +13,18 @@ import com.jn.rest.open.api.JnOpenApiAsyncTask;
 import com.jn.services.JnServiceAsyncTask;
 
 /**
- * Controller REST para consulta de tarefas assíncronas pelo id. Disponível no path
- * {@code /async/task/{asyncTaskId}}, delega a consulta ao serviço {@code JnServiceAsyncTask.GetAsyncTaskStatusById}.
+ * REST controller of the asynchronous tasks at {@code /async/task/{asyncTaskId}}; it delegates to
+ * {@code JnServiceAsyncTask.GetAsyncTaskStatusById}.
  */
 @CrossOrigin
 @RestController
 public class JnRestApiAsyncTask implements JnOpenApiAsyncTask{
 
+	/**
+	 * Get async task status by ID. Delegates to the matching service.
+	 * @param asyncTaskId the {@code asyncTaskId} path variable
+	 * @return the response body
+	 */
 	@GetMapping("/{asyncTaskId}")
 	public Map<String, Object> getAsyncTaskStatusById(@PathVariable("asyncTaskId") String asyncTaskId) {
 		CcpJsonRepresentation put = CcpOtherConstants.EMPTY_JSON.put(JnServiceAsyncTask.JsonFieldNames.asyncTaskId, asyncTaskId);

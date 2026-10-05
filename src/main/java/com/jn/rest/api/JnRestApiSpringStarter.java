@@ -51,10 +51,10 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.PathParameter;
 
 /**
- * Ponto de entrada da API REST do módulo JN (jobsnow principal). Inicializa o DI com as implementações
- * corretas (produção via GCP/Elasticsearch ou locais conforme {@code localEnvironment}), configura o handler
- * de exceções globais e registra os filtros de servlet para validação de e-mail, injeção de sessão e
- * validação de sessão.
+ * Entry point of the REST API of the jn cost center (login). Wires the dependencies (local implementations when
+ * {@code localEnvironment} is set, GCP and Elasticsearch otherwise), records unhandled errors in
+ * {@code jn_jobsnow_error} and registers the servlet filters: e-mail syntax on {@code /login/*}, session values on
+ * {@code /contact-us/*} and {@code /login/*}, and session validation on {@code /contact-us/*}.
  */
 @EnableWebMvc
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
@@ -65,6 +65,10 @@ import io.swagger.v3.oas.models.parameters.PathParameter;
 @SpringBootApplication
 public class JnRestApiSpringStarter {
 	
+	/**
+	 * Wires the dependencies and starts Spring.
+	 * @param args the command line arguments
+	 */
 	public static void main(String[] args) {
 		CcpGsonJsonHandler ccpGsonJsonHandler = new CcpGsonJsonHandler();
 		CcpDependencyInjection.loadAllDependencies(
@@ -89,7 +93,7 @@ public class JnRestApiSpringStarter {
 				localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
 				localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
-				// local: grava em c:\logs\telegram em vez de mandar mensagem real ao chat de suporte
+				// local: writes to c:\logs\telegram instead of sending a real message to the support chat
 				localEnvironment ? CcpLocalInstances.instantMessenger : ccpTelegramInstantMessenger,
 				ccpMindrotPasswordHandler,
 				ccpElasticSearchDbRequest,
@@ -105,12 +109,16 @@ public class JnRestApiSpringStarter {
 		SpringApplication.run(JnRestApiSpringStarter.class, args);
 	}
 
+	/**
+	 * Adds to the OpenAPI document the path variables that an operation uses in its path but does not declare.
+	 * @return the customizer
+	 */
 	@Bean
 	public GlobalOpenApiCustomizer missingPathParamsCustomizer() {
 		return openApi -> {
 			Paths paths = openApi.getPaths();
-			boolean pathsIgual = paths == null;
-			if (pathsIgual) return;
+			boolean pathsMissing = paths == null;
+			if (pathsMissing) return;
 			Pattern p = Pattern.compile("\\{(\\w+)\\}");
 			Paths paths2 = openApi.getPaths();
 			paths2.forEach((pathTemplate, pathItem) -> {
@@ -126,8 +134,8 @@ public class JnRestApiSpringStarter {
 					readOperations.forEach(op -> {
 					Set<String> declared = new HashSet<>();
 					var parameters = op.getParameters();
-					boolean parametersDiferente = parameters != null;
-					if (parametersDiferente) {
+					boolean hasParameters = parameters != null;
+					if (hasParameters) {
 						var parameters2 = op.getParameters();
 						var stream = parameters2.stream();
 						var filter2 = stream
@@ -147,6 +155,10 @@ public class JnRestApiSpringStarter {
 		};
 	}
 
+	/**
+	 * Describes the API in the OpenAPI document.
+	 * @return the description
+	 */
 	@Bean
 	public OpenAPI jnOpenAPI() {
 		OpenAPI openAPI = new OpenAPI();
@@ -162,6 +174,10 @@ public class JnRestApiSpringStarter {
 						return info;
 	}
 
+	/**
+	 * Serves the static resources of the Swagger UI.
+	 * @return the configurer
+	 */
 	@Bean
 	public WebMvcConfigurer swaggerResourceHandler() {
 		var webMvcConfigurer = new WebMvcConfigurer() {
@@ -178,29 +194,41 @@ public class JnRestApiSpringStarter {
 		return webMvcConfigurer;
 	}
 
+	/**
+	 * Rejects an invalid e-mail in the path of {@code /login/*}.
+	 * @return the filter registration
+	 */
 	@Bean
 	public FilterRegistrationBean<CcpValidEmailFilter> emailFilter() {
-		FilterRegistrationBean<CcpValidEmailFilter> filtro = new FilterRegistrationBean<>();
+		FilterRegistrationBean<CcpValidEmailFilter> filterRegistration = new FilterRegistrationBean<>();
 		CcpValidEmailFilter emailSyntaxFilter = CcpValidEmailFilter.getEmailSyntaxFilter("login/");
-		filtro.setFilter(emailSyntaxFilter);
-		filtro.addUrlPatterns("/login/*");
-		return filtro;
+		filterRegistration.setFilter(emailSyntaxFilter);
+		filterRegistration.addUrlPatterns("/login/*");
+		return filterRegistration;
 	}
 
+	/**
+	 * Puts the session values (user agent, ip, e-mail) in the body of {@code /contact-us/*} and {@code /login/*}.
+	 * @return the filter registration
+	 */
 	@Bean
 	public FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> putSessionValuesFilter() {
-		FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> filtro = new FilterRegistrationBean<>();
-		filtro.setFilter(CcpPutSessionValuesAndExecuteTaskFilter.TASKLESS);
-		filtro.addUrlPatterns("/contact-us/*", "/login/*");
-		return filtro;
+		FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> filterRegistration = new FilterRegistrationBean<>();
+		filterRegistration.setFilter(CcpPutSessionValuesAndExecuteTaskFilter.TASKLESS);
+		filterRegistration.addUrlPatterns("/contact-us/*", "/login/*");
+		return filterRegistration;
 	}
 
+	/**
+	 * Validates the session ({@code JnServiceLogin.ValidateLogin}) on {@code /contact-us/*}.
+	 * @return the filter registration
+	 */
 	@Bean
 	public FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> validateSessionFilter() {
-		FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> filtro = new FilterRegistrationBean<>();
+		FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> filterRegistration = new FilterRegistrationBean<>();
 		CcpPutSessionValuesAndExecuteTaskFilter filter = new CcpPutSessionValuesAndExecuteTaskFilter(JnServiceLogin.ValidateLogin);
-		filtro.setFilter(filter);
-		filtro.addUrlPatterns("/contact-us/*");
-		return filtro;
+		filterRegistration.setFilter(filter);
+		filterRegistration.addUrlPatterns("/contact-us/*");
+		return filterRegistration;
 	}
 }

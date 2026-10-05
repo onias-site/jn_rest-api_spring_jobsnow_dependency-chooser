@@ -29,6 +29,11 @@ import com.ccp.json.fields.validation.CcpJsonCommonsFields;
 @RequestMapping("/login/{email}")
 public class JnRestApiLogin implements JnOpenApiLogin {
 
+	/**
+	 * Validate session token. Delegates to the matching service.
+	 * @param sessionToken the {@code sessionToken} path variable
+	 * @param body the request body
+	 */
 	@GetMapping("/{sessionToken}")
 	public void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body) {
 		CcpJsonRepresentation ccpJsonRepresentation = new CcpJsonRepresentation(body);
@@ -36,36 +41,65 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 		JnServiceLogin.ValidateLogin.execute(json.content);
 	}
 	
+	/**
+	 * Execute login. Delegates to the matching service.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@PostMapping
 	public Map<String, Object> executeLogin(@RequestBody Map<String, Object> body) {
 		Map<String, Object> execute = JnServiceLogin.ExecuteLogin.execute(body);
 		return execute;
 	}
 
+	/**
+	 * Request login token by email. Delegates to the matching service.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@PostMapping("/token")
 	public Map<String, Object> createLoginEmail(@RequestBody Map<String, Object> body) {
 		Map<String, Object> execute = JnServiceLogin.CreateLoginEmail.execute(body);
 		return execute;
 	}
 
+	/**
+	 * Request token resend (unlock flow). Delegates to the matching service.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@PostMapping("/token/request/unlocking")
 	public Map<String, Object> unlockLoginToken(@RequestBody Map<String, Object> body) {
 		Map<String, Object> execute = JnServiceLogin.UnlockLoginToken.execute(body);
 		return execute;
 	}
 
+	/**
+	 * Request token unlock. Delegates to the matching service.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@PostMapping("/token/request/resending")
 	public Map<String, Object> resendLoginToken(@RequestBody Map<String, Object> body) {
 		Map<String, Object> execute = JnServiceLogin.ResendLoginToken.execute(body);
 		return execute;
 	}
 
+	/**
+	 * Check user registration status. Delegates to the matching service.
+	 * @param body the request body
+	 */
 	@RequestMapping(value = "/token", method = RequestMethod.HEAD)
 	public void existsLoginEmail(@RequestBody String body) {
 		CcpJsonRepresentation json = new CcpJsonRepresentation(body);
 		JnServiceLogin.ExistsLoginEmail.execute(json.content);
 	}
 
+	/**
+	 * Execute logout. Delegates to the matching service.
+	 * @param body the request body
+	 * @param sessionToken the {@code sessionToken} path variable
+	 */
 	@DeleteMapping("/{sessionToken}")
 	public void executeLogout(@RequestBody String body, @PathVariable("sessionToken") String sessionToken) {
 		CcpJsonRepresentation incompleteSessionValues = new CcpJsonRepresentation(body);
@@ -73,11 +107,20 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 		JnServiceLogin.ExecuteLogout.execute(completeSessionValues.content);
 	}
 
+	/**
+	 * Save pre-registration answers. Delegates to the matching service.
+	 * @param body the request body
+	 */
 	@PostMapping("/pre-registration")
 	public void saveAnswers(@RequestBody Map<String, Object> body) {
 		JnServiceLogin.SaveAnswers.execute(body);
 	}
 
+	/**
+	 * Save password. Delegates to the matching service.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@PostMapping("/password")
 	public Map<String, Object> savePassword(@RequestBody Map<String, Object> body) {
 		
@@ -85,6 +128,11 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 		return execute;
 	}
 	
+	/**
+	 * Request login token by email with language preference. Delegates to the matching service.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@PostMapping("/token/language/{language}")
 	public Map<String, Object> createLoginToken(
 			@RequestBody Map<String, Object> body
@@ -94,22 +142,22 @@ public class JnRestApiLogin implements JnOpenApiLogin {
 		return execute;
 	}
 
+	/**
+	 * Always fails: exists only to exercise the exception handler of the API.
+	 * @throws JnErrorLoginEndpointOnlyForTesting always
+	 */
 	@GetMapping("/erro")
 	public void onlyError() {
 		JnErrorLoginEndpointOnlyForTesting jnErrorLoginEndpointOnlyForTesting = new JnErrorLoginEndpointOnlyForTesting();
 		throw jnErrorLoginEndpointOnlyForTesting;
 	}
 
-	/**
-	 * Exceção lançada pelo endpoint {@code /erro}, que existe apenas para exercitar o tratador de exceções da API.
-	 */
+	/** Raised by the {@code /erro} endpoint, which exists only to exercise the exception handler of the API. */
 	@SuppressWarnings("serial")
 	public static class JnErrorLoginEndpointOnlyForTesting extends RuntimeException {
-		/**
-		 * Monta a mensagem que identifica o erro como proposital.
-		 */
+		/** Builds the error, marked as intentional. */
 		private JnErrorLoginEndpointOnlyForTesting() {
-			super("erro de teste");
+			super("Test error");
 		}
 	}
 }

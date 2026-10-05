@@ -28,6 +28,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 		+ "and various lock management flows such as: token lock, password lock, and token unlock requests.")
 public interface JnOpenApiLogin {
 
+	/**
+	 * Validate session token.
+	 * @param sessionToken the {@code sessionToken} path variable
+	 * @param body the request body
+	 */
 	@Operation(
 		summary = "Validate session token",
 		description = "When does it occur? When the frontend needs to confirm that an existing session is still active. "
@@ -46,6 +51,11 @@ public interface JnOpenApiLogin {
 	@GetMapping("/{sessionToken}")
 	void validateLogin(@PathVariable("sessionToken") String sessionToken, @RequestBody String body);
 
+	/**
+	 * Execute login.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@Operation(
 		summary = "Execute login",
 		description = "When does it occur? Right after the user types their password. "
@@ -98,6 +108,11 @@ public interface JnOpenApiLogin {
 	@PostMapping
 	Map<String, Object> executeLogin(@RequestBody Map<String, Object> body);
 
+	/**
+	 * Request login token by email.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@Operation(
 		summary = "Request login token by email",
 		description = "When does it occur? Right after confirming it is the user's first access and they have confirmed their email. "
@@ -144,6 +159,11 @@ public interface JnOpenApiLogin {
 	@PostMapping("/token")
 	Map<String, Object> createLoginEmail(@RequestBody Map<String, Object> body);
 
+	/**
+	 * Request login token by email with language preference.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@Operation(
 		summary = "Request login token by email with language preference",
 		description = "When does it occur? When the user needs a token and wants to receive the email in a specific language. "
@@ -190,6 +210,11 @@ public interface JnOpenApiLogin {
 	@PostMapping("/token/language/{language}")
 	Map<String, Object> createLoginToken(@RequestBody Map<String, Object> body);
 
+	/**
+	 * Request token resend (unlock flow).
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@Operation(
 		summary = "Request token resend (unlock flow)",
 		description = "When does it occur? When the user's token is locked due to too many wrong attempts and they want a new token. "
@@ -212,6 +237,11 @@ public interface JnOpenApiLogin {
 	@PostMapping("/token/request/resending")
 	Map<String, Object> unlockLoginToken(@RequestBody Map<String, Object> body);
 
+	/**
+	 * Request token unlock.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@Operation(
 		summary = "Request token unlock",
 		description = "When does it occur? When the user needs to unlock a previously locked token. "
@@ -234,6 +264,10 @@ public interface JnOpenApiLogin {
 	@PostMapping("/token/request/unlocking")
 	Map<String, Object> resendLoginToken(@RequestBody Map<String, Object> body);
 
+	/**
+	 * Check user registration status.
+	 * @param body the request body
+	 */
 	@Operation(
 		summary = "Check user registration status",
 		description = "When does it occur? Right after the user shows interest in accessing authenticated resources. "
@@ -269,6 +303,11 @@ public interface JnOpenApiLogin {
 	@RequestMapping(value = "/token", method = RequestMethod.HEAD)
 	void existsLoginEmail(@RequestBody String body);
 
+	/**
+	 * Execute logout.
+	 * @param body the request body
+	 * @param sessionToken the {@code sessionToken} path variable
+	 */
 	@Operation(
 		summary = "Execute logout",
 		description = "When does it occur? When the user intentionally ends their session or the frontend needs to disassociate from it. "
@@ -300,6 +339,10 @@ public interface JnOpenApiLogin {
 	@DeleteMapping("/{sessionToken}")
 	void executeLogout(@RequestBody String body, @PathVariable("sessionToken") String sessionToken);
 
+	/**
+	 * Save pre-registration answers.
+	 * @param body the request body
+	 */
 	@Operation(
 		summary = "Save pre-registration answers",
 		description = "When does it occur? Right after the system detects missing pre-registration data during the login flow. "
@@ -347,6 +390,11 @@ public interface JnOpenApiLogin {
 	@PostMapping("/pre-registration")
 	void saveAnswers(@RequestBody Map<String, Object> body);
 
+	/**
+	 * Save password.
+	 * @param body the request body
+	 * @return the response body
+	 */
 	@Operation(
 		summary = "Save password",
 		description = "When does it occur? After the system detects a locked or missing password, "
