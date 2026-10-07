@@ -65,7 +65,7 @@ public interface JnOpenApiLogin {
 			+ "in application storage (long-term browser storage)."
 			+ "<br/><br/><b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "<li><b>password</b> – Required. Strong password: minimum 8 characters, at least 1 uppercase letter, "
 			+ "1 lowercase letter, 1 digit, and 1 special character.</li>"
@@ -119,7 +119,7 @@ public interface JnOpenApiLogin {
 			+ "What does it do? Sends a token to the user's email so they can use it to register a password."
 			+ "<br/><br/><b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "</ul>"
 	)
@@ -173,7 +173,7 @@ public interface JnOpenApiLogin {
 			+ "</ul>"
 			+ "<b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "<li><b>language</b> – Required. Accepted values: 'portuguese', 'english', 'spanish'.</li>"
 			+ "</ul>"
@@ -221,7 +221,7 @@ public interface JnOpenApiLogin {
 			+ "What does it do? Registers a resend request for the locked token so a support bot can process it."
 			+ "<br/><br/><b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "</ul>"
 	)
@@ -235,10 +235,12 @@ public interface JnOpenApiLogin {
 			description = "Token has already been resent or unlocked."),
 	})
 	@PostMapping("/token/request/resending")
-	Map<String, Object> unlockLoginToken(@RequestBody Map<String, Object> body);
+	Map<String, Object> resendLoginToken(@RequestBody Map<String, Object> body);
 
 	/**
-	 * Request token unlock.
+	 * Request token unlock. Until 2026-10-07 this documentation sat on the method named {@code resendLoginToken} and the
+	 * resend one on {@code unlockLoginToken}; springdoc pairs the documentation with the controller by the method name,
+	 * so the published document showed the unlock path as a resend and the resend path as an unlock.
 	 * @param body the request body
 	 * @return the response body
 	 */
@@ -248,7 +250,7 @@ public interface JnOpenApiLogin {
 			+ "What does it do? Registers an unlock request for the locked token so a support bot can process it."
 			+ "<br/><br/><b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "</ul>"
 	)
@@ -262,7 +264,7 @@ public interface JnOpenApiLogin {
 			description = "Token already unlocked or already resent."),
 	})
 	@PostMapping("/token/request/unlocking")
-	Map<String, Object> resendLoginToken(@RequestBody Map<String, Object> body);
+	Map<String, Object> unlockLoginToken(@RequestBody Map<String, Object> body);
 
 	/**
 	 * Check user registration status.
@@ -275,7 +277,7 @@ public interface JnOpenApiLogin {
 			+ "(password, pre-registration)."
 			+ "<br/><br/><b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "</ul>"
 	)
@@ -317,7 +319,7 @@ public interface JnOpenApiLogin {
 			+ "</ul>"
 			+ "<b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "<li><b>token</b> – Required. The session token to invalidate.</li>"
 			+ "</ul>"
@@ -349,7 +351,7 @@ public interface JnOpenApiLogin {
 			+ "What does it do? Records the user's onboarding questionnaire answers."
 			+ "<br/><br/><b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "<li><b>channel</b> – Required. Accepted values: 'linkedin', 'telegram', 'friends', 'others'.</li>"
 			+ "<li><b>goal</b> – Required. Accepted values: 'jobs', 'recruiting'.</li>"
@@ -404,7 +406,7 @@ public interface JnOpenApiLogin {
 			+ "if the hash matches, the word list is not returned."
 			+ "<br/><br/><b>Request body fields (JSON):</b><ul>"
 			+ "<li><b>userAgent</b> – Required. Must be a non-empty string.</li>"
-			+ "<li><b>ip</b> – Required. String, min 7 / max 15 characters (IPv4 format).</li>"
+			+ "<li><b>ip</b> – Required. String, min 7 / max 45 characters (IPv4 or IPv6 address of the client).</li>"
 			+ "<li><b>email</b> – Required. Valid email address. Min 7, max 100 characters.</li>"
 			+ "<li><b>password</b> – Required. Strong password: minimum 8 characters, at least 1 uppercase letter, "
 			+ "1 lowercase letter, 1 digit, and 1 special character.</li>"
