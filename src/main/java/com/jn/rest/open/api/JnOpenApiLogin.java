@@ -96,10 +96,10 @@ public interface JnOpenApiLogin {
 				+ "The frontend should redirect the user to the email confirmation screen."),
 		@ApiResponse(responseCode = "409",
 			description = "User already logged in. The frontend should redirect the user to the password change screen."),
-		@ApiResponse(responseCode = "423",
+		@ApiResponse(responseCode = "427",
 			description = "Wrong password entered. Still within the allowed attempt limit. "
 				+ "The frontend should display an error message with the remaining attempt count."),
-		@ApiResponse(responseCode = "427",
+		@ApiResponse(responseCode = "423",
 			description = "Password pending unlock. The frontend should redirect the user to the password change screen."),
 		@ApiResponse(responseCode = "429",
 			description = "Password just locked — maximum wrong attempts exceeded. "
@@ -153,7 +153,7 @@ public interface JnOpenApiLogin {
 			description = "User already logged in. The frontend should redirect the user to the password change screen."),
 		@ApiResponse(content = {
 			@Content(schema = @Schema(example = "")) },
-			responseCode = "427",
+			responseCode = "423",
 			description = "Password pending unlock. The frontend should redirect the user to the password change screen."),
 	})
 	@PostMapping("/token")
@@ -299,7 +299,7 @@ public interface JnOpenApiLogin {
 			description = "New user — email not found. The frontend should redirect the user to the email confirmation screen."),
 		@ApiResponse(responseCode = "409",
 			description = "User already logged in. The frontend should redirect the user to the password change screen."),
-		@ApiResponse(responseCode = "427",
+		@ApiResponse(responseCode = "423",
 			description = "Password pending unlock. The frontend should redirect the user to the password change screen."),
 	})
 	@RequestMapping(value = "/token", method = RequestMethod.HEAD)
@@ -386,7 +386,7 @@ public interface JnOpenApiLogin {
 			description = "User already logged in. The frontend should redirect the user to the password change screen."),
 		@ApiResponse(content = {
 			@Content(schema = @Schema(example = "")) },
-			responseCode = "427",
+			responseCode = "423",
 			description = "Password pending unlock. The frontend should redirect the user to the password change screen."),
 	})
 	@PostMapping("/pre-registration")
