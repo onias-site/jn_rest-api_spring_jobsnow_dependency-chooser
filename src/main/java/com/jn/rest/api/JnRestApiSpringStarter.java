@@ -89,7 +89,7 @@ public class JnRestApiSpringStarter {
 
 		CcpDependencyInjection.loadAllDependencies
 		(
-				localEnvironment ? CcpLocalInstances.syncMensageriaListener : new CcpGcpPubSubMensageriaSender(),
+				localEnvironment ? CcpLocalInstances.asyncMensageriaListener : new CcpGcpPubSubMensageriaSender(),
 				localEnvironment ? CcpLocalInstances.email : new CcpSendGridEmailSender(),
 				localEnvironment ? CcpLocalInstances.bucket : new CcpGcpFileBucket(),
 				localEnvironment ? CcpLocalCacheInstances.map : new CcpGcpMemCache(),
