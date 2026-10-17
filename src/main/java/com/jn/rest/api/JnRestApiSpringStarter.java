@@ -38,11 +38,10 @@ import com.ccp.local.testings.implementations.CcpLocalInstances;
 import com.ccp.local.testings.implementations.cache.CcpLocalCacheInstances;
 import com.ccp.rest.api.spring.exceptions.handler.CcpRestApiExceptionHandlerSpring;
 import com.ccp.rest.api.spring.servlet.filters.CcpPutSessionValuesAndExecuteTaskFilter;
-import com.ccp.rest.api.spring.servlet.filters.CcpValidEmailFilter;
 import com.ccp.rest.api.utils.CcpRestApiUtils;
 import com.jn.entities.JnEntityJobsnowError;
-import com.jn.rest.api.endpoints.JnRestApiLogin;
-import com.jn.services.JnServiceLogin;
+import com.jn.rest.api.endpoints.JnRestApiAsyncTask;
+import com.jn.business.login.JnBusinessValidateLogin;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
@@ -51,15 +50,15 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.PathParameter;
 
 /**
- * Entry point of the REST API of the jn cost center (login). Wires the dependencies (local implementations when
- * {@code localEnvironment} is set, GCP and Elasticsearch otherwise), records unhandled errors in
- * {@code jn_jobsnow_error} and registers the servlet filters: e-mail syntax on {@code /login/*}, session values on
- * {@code /contact-us/*} and {@code /login/*}, and session validation on {@code /contact-us/*}.
+ * Entry point of the REST API of the jn cost center (asynchronous tasks). Wires the dependencies (local
+ * implementations when {@code localEnvironment} is set, GCP and Elasticsearch otherwise), records unhandled errors in
+ * {@code jn_jobsnow_error} and registers the servlet filters: session values and session validation on
+ * {@code /contact-us/*}. Until 2026-10-17 it also served the login, which went to the API of its own cost center.
  */
 @EnableWebMvc
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 @ComponentScan(basePackageClasses = {
-		JnRestApiLogin.class,
+		JnRestApiAsyncTask.class,
 		CcpRestApiExceptionHandlerSpring.class,
 })
 @SpringBootApplication
@@ -164,9 +163,9 @@ public class JnRestApiSpringStarter {
 		OpenAPI openAPI = new OpenAPI();
 		Info info2 = new Info();
 		Info title = info2
-						.title("JobsNow Authentication API");
+						.title("JobsNow API");
 						Info description = title
-						.description("REST API for authentication: login, password management, token and session control.");
+						.description("REST API of the jn cost center: status of the asynchronous tasks.");
 						Info version = description
 						.version("1.0");
 						OpenAPI info = openAPI
@@ -195,38 +194,25 @@ public class JnRestApiSpringStarter {
 	}
 
 	/**
-	 * Rejects an invalid e-mail in the path of {@code /login/*}.
-	 * @return the filter registration
-	 */
-	@Bean
-	public FilterRegistrationBean<CcpValidEmailFilter> emailFilter() {
-		FilterRegistrationBean<CcpValidEmailFilter> filterRegistration = new FilterRegistrationBean<>();
-		CcpValidEmailFilter emailSyntaxFilter = CcpValidEmailFilter.getEmailSyntaxFilter("login/");
-		filterRegistration.setFilter(emailSyntaxFilter);
-		filterRegistration.addUrlPatterns("/login/*");
-		return filterRegistration;
-	}
-
-	/**
-	 * Puts the session values (user agent, ip, e-mail) in the body of {@code /contact-us/*} and {@code /login/*}.
+	 * Puts the session values (user agent, ip, e-mail) in the body of {@code /contact-us/*}.
 	 * @return the filter registration
 	 */
 	@Bean
 	public FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> putSessionValuesFilter() {
 		FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> filterRegistration = new FilterRegistrationBean<>();
 		filterRegistration.setFilter(CcpPutSessionValuesAndExecuteTaskFilter.TASKLESS);
-		filterRegistration.addUrlPatterns("/contact-us/*", "/login/*");
+		filterRegistration.addUrlPatterns("/contact-us/*");
 		return filterRegistration;
 	}
 
 	/**
-	 * Validates the session ({@code JnServiceLogin.ValidateLogin}) on {@code /contact-us/*}.
+	 * Validates the session ({@code JnBusinessValidateLogin}) on {@code /contact-us/*}.
 	 * @return the filter registration
 	 */
 	@Bean
 	public FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> validateSessionFilter() {
 		FilterRegistrationBean<CcpPutSessionValuesAndExecuteTaskFilter> filterRegistration = new FilterRegistrationBean<>();
-		CcpPutSessionValuesAndExecuteTaskFilter filter = new CcpPutSessionValuesAndExecuteTaskFilter(JnServiceLogin.ValidateLogin);
+		CcpPutSessionValuesAndExecuteTaskFilter filter = new CcpPutSessionValuesAndExecuteTaskFilter(JnBusinessValidateLogin.INSTANCE);
 		filterRegistration.setFilter(filter);
 		filterRegistration.addUrlPatterns("/contact-us/*");
 		return filterRegistration;
